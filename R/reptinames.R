@@ -132,6 +132,7 @@ get.synonyms <- function(species,year=2000,show.progress=TRUE){
 
 update.names <- function(dat,synonyms,plot.changes=TRUE){
   if(class(dat)=="phylo"){
+    phy <- dat
     synonyms.v <- unlist(synonyms) # synonyms should be a named list for (at least) all species in the phylogeny. Name = currently recognized name, elements = synonyms and currently recognized name
     tips <- phy$tip.label
     changed <- sapply(tips,FUN=function(x){
@@ -222,6 +223,7 @@ update.names <- function(dat,synonyms,plot.changes=TRUE){
 
 get.updated.names <- function(dat,synonyms){
   if(class(dat)=="phylo"){
+    phy <- dat
     synonyms.v <- unlist(synonyms) # synonyms should be a named list for (at least) all species in the phylogeny. Name = currently recognized name, elements = synonyms and currently recognized name
     tips <- phy$tip.label
     changed <- sapply(tips,FUN=function(x){
