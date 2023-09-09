@@ -1,0 +1,11 @@
+Package: reptinames
+Type: Package
+Title: Reptile Nomenclatural Standardization using The Reptile Database
+Version: 0.1.0
+Author: Riley Stanton
+Maintainer: Riley Stanton <rms434@cornell.edu>
+Description: A package that interfaces with The Reptile Database to update reptile species names in phylogenies and datasets. The intention of this package is to facilitate using data from various studies and phylogneies that may have different names for many species in their datasets by automatically changing the species names in these datasets to their currently recongized forms whenever possible.
+License: GNU
+Encoding: UTF-8
+LazyData: true
+Imports: phytools, stringr, tidyverse, rvest, tm, data.table
