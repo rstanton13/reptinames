@@ -126,6 +126,13 @@ get.synonyms <- function(species,year=2000,show.progress=TRUE){
   }else{
     print("All synonyms are unique to their respective species! None have been removed.")
   }
+  for(i in 1:length(synonyms)){
+    x <- synonyms[[i]]
+    nm <- names(synonyms[i])
+    if(nm %nin% x){
+      synonyms[[i]] <- c(x,nm)
+    }
+  }
   synonyms
 }
 
