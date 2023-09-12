@@ -86,12 +86,11 @@ get.synonyms <- function(species,year=2000,show.progress=TRUE){
     txt <- gsub("\t","BREAK_HERE",txt)
     txt <- gsub("\n","BREAK_HERE",txt)
     txt <- str_split(txt,pattern="BREAK_HERE",simplify=T)
+    txt <- gsub("et al.","",txt)
+    txt <- gsub("cf.","",txt)
     txt <- gsub(r"{\s*\([^\)]+\)}","",txt)
     txt <- gsub('[[:punct:] ]+',' ',txt)
     txt <- txt[nchar(txt)>1]
-    txt <- gsub("et al","",txt)
-    txt <- gsub("sic","",txt)
-    txt <- gsub("cf","",txt)
     txt <- txt[sapply(txt,FUN=has.AUTHOR)]
     txt <- txt[sapply(txt,FUN=has.date)]
     txt <- str_squish(txt)
