@@ -123,7 +123,7 @@ get.synonyms <- function(species,year=2000,show.progress=TRUE){
       print(gsub("_"," ",is.not.unique[i]))
     }
     print("Tips matching these names will not be updated, but will be flagged for manual inspection.")
-    print("Possible matches for these names can be viewed using get.updated.phylo.names() or get.updated.data.names()")
+    print("Possible matches for these names can be viewed using get.updated.names()")
   }else{
     print("All synonyms are unique to their respective species! None have been removed.")
   }
