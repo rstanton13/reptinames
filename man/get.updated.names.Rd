@@ -2,7 +2,7 @@
 \alias{get.updated.names}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Gather information on reptile species name changes that would be to a dataset using a list of synonyms
+Get updated reptile species names
 }
 \description{
 This function runs the same procedure as \link{update.names} to update reptile species names in a phylogeny or dataset, but instead of changing the species names of the data, saves the old and new names into a dafa frame. Additionally lists all possible species an original name could refer to if it matched as a synonym for more than one species, making manual determination of what the original name referred to easier. Also labels names for which no match was found as such to facilitate easier manual replacement.
