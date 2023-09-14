@@ -2,7 +2,7 @@
 \alias{get.species}
 get.species
 \title{
-Compile all currently recognized species in a given reptile taxon
+Compile all currently recognized species in a given reptile group
 }
 \description{
 Searches The Reptile Database for a given taxonomic group and returns a vector containing all (or nearly all) of the species listed as being valid members of that group.
