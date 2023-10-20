@@ -360,3 +360,70 @@ get.updated.names <- function(dat,synonyms){
     }
   }
 }
+
+get.info <- function(species, data.type=c("distribution","reproduction")){
+
+  iter <- length(species)
+    dat <- data.frame(species=species,
+                      distribution=NA,
+                      reproduction=NA)
+    for(i in 1:iter){
+      if(grepl(" ",species[i])){
+        genus <- word(species[i],1,1," ")
+        spec.epi <- word(species[i],2,2," ")
+      }else if(grepl("_",species[i])){
+        genus <- word(species[i],1,1,"_")
+        spec.epi <- word(species[i],2,2,"_")
+      }
+      link <- paste("https://reptile-database.reptarium.cz/species?genus=",genus,"&species=",spec.epi,sep="")
+      webpage <- read_html(link)
+      page_list <- webpage %>%
+        html_elements(css = ".wide")
+      txt <- html_text(page_list)
+      txt <- gsub("\n","GSUBBEDTHIS",txt)
+      txt <- str_split(txt,pattern="GSUBBEDTHIS",simplify=TRUE)
+      txt <- str_squish(txt)
+      txt <- txt[txt!=""]
+      if(any(data.type=="distribution")){
+        dist <- txt[grepl("Distribution",txt)][1]
+        dist <- str_split(dist," ",simplify=TRUE)
+        which(grepl("Distribution",dist))
+        which(grepl("Distribution",dist))
+        dist.word <- dist[which(grepl("Distribution",dist)):length(dist)]
+        dist2 <- paste(dist.word,collapse=" ")
+        dist2 <- gsub("Distribution","",dist2)
+        dist <- str_squish(dist2)
+        print(paste("Gathered distribution info for",species[i]))
+      }else if(exists("dist")){
+        rm(dist)
+      }
+      if(any(data.type=="reproduction")){
+        repro <- txt[grepl("Reproduction",txt)][1]
+        repro <- str_split(repro," ",simplify=TRUE)
+        which(grepl("Reproduction",repro))
+        which(grepl("Reproduction",repro))
+        repro.word <- repro[which(grepl("Reproduction",repro)):which(grepl("Types",repro))-1]
+        repro2 <- paste(repro.word,collapse=" ")
+        repro2 <- gsub("Reproduction","",repro2)
+        repro <- str_squish(repro2)
+        print(paste("Gathered reproduction info  for",species[i]))
+      }else if(exists("repro")){
+        rm(repro)
+      }
+
+      if(exists("repro")){
+        dat$reproduction[i] <- repro
+      }
+      if(exists("dist")){
+        dat$distribution[i] <- dist
+      }
+
+    }
+    if(all(is.na(dat$distribution))){
+      dat <- subset(dat,select=-distribution)
+    }
+    if(all(is.na(dat$reproduction))){
+      dat <- subset(dat,select=-reproduction)
+    }
+    return(dat)
+}
