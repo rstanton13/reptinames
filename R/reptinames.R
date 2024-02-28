@@ -1,5 +1,3 @@
-`%nin%` <- negate(`%in%`)
-
 get.species <- function(group,type){
   {
     if(type=="taxon"){
