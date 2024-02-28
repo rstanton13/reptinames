@@ -427,3 +427,14 @@ get.info <- function(species, data.type=c("distribution","reproduction")){
     }
     return(dat)
 }
+
+genus.mrca.tree <- function(phy, genus){
+  tips <- str_subset(phy$tip.label, genus)
+  return(extract.clade(phy, getMRCA(phy, tips)))
+}
+
+genus.monophyly <- function(phy, genus, genus_sep="_"){
+  tips <- str_subset(phy$tip.label, genus)
+  genus.tree <- extract.clade(phy, getMRCA(phy, tips))
+  return(length(unique(word(genus.tree$tip.label,1,1,sep="_")))==1)
+}
