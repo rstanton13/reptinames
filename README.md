@@ -6,9 +6,7 @@ This packages interfaces with The Reptile Database to update reptile species nam
 
 ## Installation:
 ```
-install.packages("devtools")
-library(devtools)
-install_github("rstanton13/reptinames")
+devtools::install_github("rstanton13/reptinames")
 library(reptinames)
 ```
 
