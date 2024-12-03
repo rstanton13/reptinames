@@ -51,6 +51,61 @@ get.species <- function(group,type){
   }
 }
 
+get.description.dates <- function(group,type){
+  {
+    if(type=="taxon"){
+      taxon.link <- paste("https://reptile-database.reptarium.cz/advanced_search?taxon=",group,"&submit=Search",sep="")
+    }else if(type=="genus"){
+      taxon.link <- paste("https://reptile-database.reptarium.cz/advanced_search?genus=",group,"&submit=Search",sep="")
+    }
+    taxon_page <- read_html(taxon.link)
+    taxon_list <- taxon_page %>%
+      html_elements(css = ".wide")
+    txt <- html_text(taxon_list)
+    txt <- gsub("\n","GSUBBEDTHIS",txt)
+    txt <- str_split(txt,pattern="GSUBBEDTHIS",simplify=TRUE)
+    txt <- str_squish(txt)
+    txt <- txt[nchar(txt)>1]
+    txt <- gsub("[^[:alnum:][:space:]']",'',txt)
+    txt <- str_squish(txt)
+    species_found <- as.numeric(str_split(txt[grepl("Species found",txt)],pattern=" ",simplify = TRUE)[3])
+    ## keeping only the species ones: should have 2nd to last word be name in all caps, then last element be a 4-digit number (a year)
+    second.last.is.name <- sapply(str_split(txt,pattern=" "),FUN=function(x){
+      if(length(x)<4){
+        FALSE
+      }else{
+        y <- x[length(x)-1]
+        y==toupper(y)
+      }
+    })
+    numbers_only <- function(x) !grepl("\\D", x)
+    last.is.date <- sapply(str_split(txt,pattern=" "),FUN=function(x){
+      if(length(x)<4){
+        FALSE
+      }else{
+        y <- x[length(x)]
+        ifelse(numbers_only(y),
+               1500<=as.numeric(y)&as.numeric(y)<=2030,
+               FALSE)
+      }
+    })
+    txt <- txt[second.last.is.name & last.is.date]
+    
+    sp_dates <- setNames(as.numeric(sub(".*\\s+", "", txt)), word(txt, start = 1, end = 2))
+    cat(paste("Successfully recovered dates for",length(sp_dates),"out of",species_found,"recognized species in",group,"from The Reptile Database\n"))
+    
+    return(sp_dates)
+  }
+}
+
+species.by.time.plot <- function(group,type){
+  y = get.description.dates(group, type)
+  plot(c(1:length(y))~sort(y),pch=19, xlab = "Year", ylab = "Number of species", 
+       main = paste("Number of nominal",group,"over time"),
+       xlim = c(min(y),as.numeric(format(Sys.Date(), "%Y")))
+       )
+}
+
 get.synonyms <- function(species,year=2000,show.progress=TRUE){
   synonyms <- as.list(species)
   names(synonyms) <- species
