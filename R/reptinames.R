@@ -3,9 +3,9 @@
 get.species <- function(group,type){
   {
     if(type=="taxon"){
-      taxon.link <- paste("https://reptile-database.reptarium.cz/advanced_search?taxon=",group,"&submit=Search",sep="")
+      taxon.link <- paste("https://reptile-database.reptarium.cz/advanced_search?taxon=",group,"&exact%5B0%5D=taxon&submit=Search",sep="")
     }else if(type=="genus"){
-      taxon.link <- paste("https://reptile-database.reptarium.cz/advanced_search?genus=",group,"&submit=Search",sep="")
+      taxon.link <- paste("https://reptile-database.reptarium.cz/advanced_search?genus=",group,"&exact%5B0%5D=genus&submit=Search",sep="")
     }
     taxon_page <- read_html(taxon.link)
     taxon_list <- taxon_page %>%
@@ -495,3 +495,4 @@ genus.monophyly <- function(phy, genus, genus_sep="_"){
   genus.tree <- extract.clade(phy, getMRCA(phy, tips))
   return(length(unique(word(genus.tree$tip.label,1,1,sep="_")))==1)
 }
+
